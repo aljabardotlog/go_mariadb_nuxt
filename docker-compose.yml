@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+    mariadb:
+        image: mariadb
+        container_name: my_mariadb
+        command: --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_DATABASE: 'db'
+            MYSQL_USER: 'adl'
+            MYSQL_PASSWORD: 'LinuxKU13!'
+            MYSQL_ROOT_PASSWORD: 'toor'
+        ports:
+            - "3307:3306"
+        volumes:
+            - "./data/db:/data/db"
+        networks:
+            - webnet
+        restart: always
+    api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+        container_name: be_api
+        ports:
+            - 9001:9001
+        volumes:
+            - "./api:/app"
+        networks:
+            - webnet
+        restart: always
+networks:
+   webnet:
